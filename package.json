@@ -1,24 +1,14 @@
 {
-  "name": "twigtrail",
+  "name": "marcela",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "deploy": "vercel --prod"
-    },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marcela981/Twigtrail.git"
+    "dev": "react-scripts start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/marcela981/Twigtrail/issues"
-  },
-  "homepage": "https://github.com/marcela981/Twigtrail#readme",
   "dependencies": {
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.3",
@@ -26,8 +16,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1",
-    "three": "^0.164.1",
-    "vercel": "^34.1.7"
+    "react-three-fiber": "^6.0.13",
+    "three": "^0.164.1"
   },
   "browserslist": {
     "production": [
