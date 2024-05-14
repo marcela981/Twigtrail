@@ -1,25 +1,18 @@
+import React from 'react';
 import { Canvas } from "@react-three/fiber"
-import Experience from "./Game/Experience"
-
+import Experience from "./Experience"
 
 const App = () => {
-    // Camera settings
-    const cameraSettings = 
-    {
-        position: [0, 2, 1],
-        fov: 50
-    }
-    
-
+    const cameraSettings = {
+      position: [0, 2, 1],
+      fov: 50,
+    };
+  
     return (
-        <>
-           <Canvas
-                camera={cameraSettings}
-                shadows            >
-
-                <Experience />
-            </Canvas>
-        </>
-    )
-}
-export default App
+      <Canvas camera={cameraSettings} shadows>
+        <Experience />
+      </Canvas>
+    );
+  };
+  
+  export default App;

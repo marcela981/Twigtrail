@@ -6,13 +6,27 @@ Source: https://sketchfab.com/3d-models/anime-kid-db584248a36a464d86b723f7a12792
 Title: Anime Kid
 */
 
-import React, { useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useRef, useEffect } from 'react';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
-export function Main_Character(props) {
-  const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/assets/models/main_character/scene.gltf')
-  const { actions } = useAnimations(animations, group)
+
+export const Main_Character = ({ animation, ...props }) => {
+  const group = useRef();
+  const { nodes, materials, animations } = useGLTF('/assets/models/main_character/anime_kid.glb');
+  const { actions } = useAnimations(animations, group);
+
+  useEffect(() => {
+    actions[animation]?.reset().fadeIn(0.2).play();
+    return () => {
+      actions[animation]?.fadeOut(0.2);
+    };
+  }, [animation, actions]);
+
+  useFrame(() => {
+    // Lógica adicional si es necesario
+  });
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
@@ -122,7 +136,7 @@ export function Main_Character(props) {
         </group>
       </group>
     </group>
-  )
-}
+  );
+};
 
-useGLTF.preload('/assets/models/main_character/scene.gltf')
+useGLTF.preload('/assets/models/main_character/anime_kid.glb');
