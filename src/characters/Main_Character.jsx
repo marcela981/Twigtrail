@@ -6,13 +6,24 @@ Source: https://sketchfab.com/3d-models/anime-kid-db584248a36a464d86b723f7a12792
 Title: Anime Kid
 */
 
-import React, { useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useRef, useContext, useEffect } from 'react';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import CharacterContext from '../CharacterContext'; // Asegúrate de que la ruta es correcta
 
 export function Main_Character(props) {
-  const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/assets/models/main_character/scene.gltf')
-  const { actions } = useAnimations(animations, group)
+  const group = useRef();
+  const { nodes, materials, animations } = useGLTF('/assets/models/main_character/scene.gltf');
+  const { actions, mixer } = useAnimations(animations, group);
+  const { setActions } = useContext(CharacterContext);
+
+  useEffect(() => {
+    console.log("Animaciones cargadas", actions);
+    setActions(actions); // Actualiza las acciones en el contexto con las acciones cargadas
+  }, [actions, setActions]);
+
+  useFrame((state, delta) => mixer.update(delta)); // Asegúrate de que esta línea está presente
+  
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
@@ -124,5 +135,5 @@ export function Main_Character(props) {
     </group>
   )
 }
-
+export default Main_Character;
 useGLTF.preload('/assets/models/main_character/scene.gltf')
