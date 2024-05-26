@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Physics } from '@react-three/rapier';
 import Ecctrl from 'ecctrl';
+import Personaje_principal from './characters/Personaje_principal';
+import Habitacion from './room/Habitacion';
+
 
 const useKeyboardControls = () => {
   const [movement, setMovement] = useState({
@@ -9,19 +12,22 @@ const useKeyboardControls = () => {
     left: false,
     right: false,
     jump: false,
+    run: false,
+    walk: false, 
   });
 
-  // Define el mapeo de teclas y la función de manejo de eventos aquí
   const keyMap = {
-    ArrowUp: 'forward',
-    KeyW: 'forward',
-    ArrowDown: 'backward',
-    KeyS: 'backward',
+    ArrowUp: 'walk',
+    KeyW: 'walk',
+    ArrowDown: 'walkingBackword',
+    KeyS: 'walkingBackword',
     ArrowLeft: 'left',
     KeyA: 'left',
     ArrowRight: 'right',
     KeyD: 'right',
-    Space: 'jump'
+    Space: 'jump',
+    ShiftRight: 'run',
+    ShiftLeft: 'run'
   };
 
   const handleKeyEvent = (event, active) => {
@@ -51,15 +57,14 @@ const Experience = () => {
   const movement = useKeyboardControls();
 
   return (
+    <>
     <Physics>
-      <Ecctrl movement={movement}>
-        {/* Pon aquí cuando este el modelo */}
-        <mesh>
-          <boxGeometry args={[2, 2, 1]} />
-          <meshStandardMaterial color="blue" />
-        </mesh>
-      </Ecctrl>
+      <Habitacion  />
+        <Ecctrl movement={movement}>
+          <Personaje_principal movement={movement} /> 
+        </Ecctrl>
     </Physics>
+    </>
   );
 };
 
