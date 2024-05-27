@@ -13,7 +13,7 @@ export default function Habitacion(props) {
   const { nodes, materials } = useGLTF('assets/models/Room/gamer_room.glb')
   return (
     <group {...props} dispose={null}>
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.3}>
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.8}>
         <mesh
           castShadow
           receiveShadow
