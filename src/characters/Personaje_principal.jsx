@@ -56,12 +56,12 @@ useEffect(() => {
   
 
   return (
-    <group ref={group} {...props} dispose={null} rotation={[0, rotationY, 0]}>
+    <group ref={group} {...props} dispose={null} position={[0, -0.7, 0]} rotation={[0, rotationY, 0]}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="root">
             <group name="GLTF_SceneRootNode" rotation={[Math.PI / 2, 0, 0]}>
-              <group name="Armature_70" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+              <group name="Armature_70" rotation={[Math.PI / 2, 0, 0]} scale={0.028}>
                 <group name="GLTF_created_0">
                   <primitive object={nodes.GLTF_created_0_rootJoint} />
                   <skinnedMesh
