@@ -6,14 +6,25 @@ Source: https://sketchfab.com/3d-models/gamer-room-d5e880eed7b145729be22abc2d882
 Title: Gamer Room
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Habitacion(props) {
   const { nodes, materials } = useGLTF('assets/models/Room/gamer_room.glb')
+
+  useEffect(() => {
+
+    Object.keys(materials).forEach(key => {
+        materials[key].metalness = 0.1;
+        materials[key].roughness = 0.7;
+        materials[key].emissiveIntensity = 0.2;
+      });
+}, [materials]);
+
+
   return (
     <group {...props} dispose={null}>
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.8}>
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={1}>
         <mesh
           castShadow
           receiveShadow

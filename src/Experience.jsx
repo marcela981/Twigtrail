@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Physics, RigidBody, CapsuleCollider, MeshCollider, useRapier } from '@react-three/rapier';
+import React, { useEffect, useState, useRef } from 'react';
+import { Physics, useRapier } from '@react-three/rapier';
 import Ecctrl from 'ecctrl';
 import Personaje_principal from './characters/Personaje_principal';
 import Habitacion from './room/Habitacion';
 import Suelo from './room/Suelo';
+
+
+
 
 const useKeyboardControls = () => {
   const [movement, setMovement] = useState({
@@ -53,31 +56,38 @@ const useKeyboardControls = () => {
   return movement;
 };
 
-const Experience = () => {
-  const movement = useKeyboardControls();
 
 
+const SetupPhysicsWorld = () => {
+  const { world } = useRapier();
+
+  useEffect(() => {
+    if (world) {
+      world.timestep = 1 / 60;
+      world.gravity = { x: 0, y: -9.81, z: 0 };
+    }
+  }, [world]);
+
+  return null;
+};
+
+  const Experience = ({ personajeRef }) => {
+
+    const movement = useKeyboardControls();
+  
   return (
     <>
     <Physics>
+    <SetupPhysicsWorld />
         <Habitacion />
         <Suelo />
           <Ecctrl movement={movement}>
-            <Personaje_principal movement={movement} /> 
+            <Personaje_principal ref={personajeRef} movement={movement} /> 
           </Ecctrl>
     </Physics>
     </>
   );
 };
 
-const SetupPhysicsWorld = () => {
-  const { world } = useRapier();  // Usar useRapier dentro de un componente que esté dentro de <Physics>
-
-  useEffect(() => {
-    world.gravity.set(0, -9.81, 0); 
-  }, [world]);
-
-  return null; 
-};
 
 export default Experience;
