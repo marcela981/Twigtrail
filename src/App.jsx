@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { AmbientLight, PointLight } from '@react-three/fiber';
 import Experience from './Experience'
-import { AmbientLight } from '@react-three/fiber';
-import { PointLight } from '@react-three/fiber';
+import Camera from './components/camera/Camera';
 
 
 const App = () => {
+  const personajeRef = useRef();
+  
   return (
-    <Canvas camera={{ position: [0, 2, 10], fov: 50 }}>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={5} color="white" />
-      <Experience />
+    <Canvas >
+      <ambientLight intensity={1} color="#ffffff" />
+      <pointLight position={[0, 5, 0]} intensity={2} color="#ffffff" castShadow />
+      <Camera characterRef={personajeRef} />
+      <Experience personajeRef={personajeRef} />
     </Canvas>
   )
 }
