@@ -1,14 +1,15 @@
 import React, { useRef, useEffect, useState, forwardRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber';
+import useKeyboardControls from '../components/controls/useKeyboardControls';
 
-
-export default function Personaje_principal(props, ref) {
-  const group = useRef()
-  const { nodes, materials, animations } = useGLTF('assets/models/Character/majd_the_boy.glb')
-  const { actions } = useAnimations(animations, group);
-  const [rotationY, setRotationY] = useState(0); // Estado para la rotación del personaje
-  const { camera } = useThree();
+export default function PersonajePrincipal() {
+    const group = useRef();
+    const { nodes, materials, animations } = useGLTF('assets/models/Character/majd_the_boy.glb')
+    const { actions } = useAnimations(animations, group);
+    const [rotationY, setRotationY] = useState(0); // Estado para la rotación del personaje
+    const { camera } = useThree();
+    const movement = useKeyboardControls();
 
   useEffect(() => {
 
@@ -18,75 +19,39 @@ export default function Personaje_principal(props, ref) {
         materials[key].emissiveIntensity = 0.2;
       });
 
-    console.log(animations);
+      console.log("Loaded animations:", animations);
 }, [animations], [materials]);
 
-// Controla la rotación y las animaciones
-useEffect(() => {
-    const turnSpeed = 0.1; // Velocidad de giro
-
-
-    if (props.movement.left) {
-        setRotationY(prev => prev - turnSpeed); // Gira a la izquierda
-    } 
-    if (props.movement.right) {
-        setRotationY(prev => prev + turnSpeed);
-    }
-
-    // Manejo de animaciones según el movimiento
-    if (props.movement.forward || props.movement.backward) {
-        actions.Walk?.play();
-      } else {
-        actions.Walk?.stop();
-      }
-  
-      if (props.movement.jump) {
-        actions.Jump?.play();
-      } else {
-        actions.Jump?.stop();
-      }
-  
-    }, [props.movement, actions, rotationY]);
 
 useFrame(() => {
-    const moveSpeed = 0.05;
-    if (props.movement.forward) {
-        group.current.position.z -= moveSpeed;
-    }
-    if (props.movement.backward) {
-        group.current.position.z += moveSpeed;
-    }
-    if (props.movement.left) {
-        group.current.position.x += moveSpeed;
-    }
-    if (props.movement.right) {
-        group.current.position.x -= moveSpeed;
+    if (movement.forward) {
+      actions.Walk.play();
+      group.current.translateZ(-0.05); // Mueve hacia adelante
+    } else if (movement.backward) {
+      actions.Walk.play();
+      group.current.translateZ(0.05); // Mueve hacia atrás
+    } else {
+      actions.Walk.stop();
     }
 
-    // Actualizar rotación del personaje
+    if (movement.left) {
+      setRotationY(prev => prev + 0.1); // Gira a la izquierda
+    } 
+    if (movement.right) {
+      setRotationY(prev => prev - 0.1); // Gira a la derecha
+    }
+
+    if (movement.jump) {
+      actions.Jump.play();
+    } else {
+      actions.Jump.stop();
+    }
+
     group.current.rotation.y = rotationY;
-
-    // Animaciones
-    if (props.movement.walk) {
-        actions.Walk?.play();
-    } else {
-        actions.Walk?.stop();
-    }
-    if (props.movement.run) {
-        actions.Run?.play();
-    } else {
-        actions.Run?.stop();
-    }
-    if (props.movement.jump) {
-        actions.Jump?.play();
-    } else {
-        actions.Jump?.stop();
-    }
-});
-  
+  });
 
   return (
-    <group ref={group} {...props} dispose={null} position={[0, -0.62, 0]} rotation={[0, rotationY, 0]}>
+    <group ref={group}  position={[0, -0.62, 0]} rotation={[0, rotationY, 0]}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="root">
@@ -178,10 +143,11 @@ useFrame(() => {
         </group>
       </group>
     </group>
-  )
+  );
 
 
 
 }
+
 
 useGLTF.preload('assets/models/Character/majd_the_boy.glb')

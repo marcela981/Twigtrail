@@ -1,17 +1,17 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import React, { useRef } from 'react';
 
-const Camera = ({ characterRef }) => {
+const Camera = ({ characterRef, offsetY = 4, offsetZ = 10 }) => {
     const { camera } = useThree();
 
   useFrame(() => {
     if (characterRef && characterRef.current) {
         const desiredPosition = characterRef.current.position.clone();
-        desiredPosition.y += 4;
-        desiredPosition.z -= 10;
+        desiredPosition.y += offsetY;
+        desiredPosition.z -= offsetZ;
 
 
-        camera.position.lerp(newPos, 0.1);
+        camera.position.lerp(desiredPosition, 0.1);
         camera.lookAt(characterRef.current.position);
 
     }
