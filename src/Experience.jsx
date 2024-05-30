@@ -5,6 +5,7 @@ import Personaje_principal from './characters/Personaje_principal';
 import Habitacion from './room/Habitacion';
 import Suelo from './room/Suelo';
 import useKeyboardControls from './components/controls/useKeyboardControls';
+import Camera from './components/camera/Camera';
 
 
 
@@ -21,17 +22,26 @@ const SetupPhysicsWorld = () => {
   return null;
 };
 
-  const Experience = () => {
+  const Experience = ({ personajeRef }) => {
 
     const movement = useKeyboardControls();
+    const characterRef = useRef();
   
   return (
     <>
       <Physics>
           <Habitacion />
           <Suelo />
-            <Ecctrl movement={movement}>
-              <Personaje_principal movement={movement} /> 
+            <Ecctrl 
+              movement={movement}
+              camInitDis={0}
+              camMaxDis={-1}
+              camMinDis={-0.2}
+              camFollowMult={2}
+              camCollision={true}
+              camCollisionOffset={0.7}
+              debug={false} >
+              <Personaje_principal movement={movement} ref={personajeRef}/> 
             </Ecctrl>
       </Physics>
     </>
