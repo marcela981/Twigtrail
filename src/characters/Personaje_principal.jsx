@@ -3,13 +3,13 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber';
 import useKeyboardControls from '../components/controls/useKeyboardControls';
 
-export default function PersonajePrincipal() {
-    const group = useRef();
+const PersonajePrincipal = forwardRef((props, ref) => {
+    const group = ref || useRef();
     const { nodes, materials, animations } = useGLTF('assets/models/Character/majd_the_boy.glb')
     const { actions } = useAnimations(animations, group);
     const [rotationY, setRotationY] = useState(0); // Estado para la rotación del personaje
-    const { camera } = useThree();
     const movement = useKeyboardControls();
+
 
   useEffect(() => {
 
@@ -51,7 +51,7 @@ useFrame(() => {
   });
 
   return (
-    <group ref={group}  position={[0, -0.62, 0]} rotation={[0, rotationY, 0]}>
+    <group ref={group}  dispose={null} position={[0, -0.62, 0]} rotation={[0, rotationY, 0]}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="root">
@@ -147,7 +147,6 @@ useFrame(() => {
 
 
 
-}
+});
 
-
-useGLTF.preload('assets/models/Character/majd_the_boy.glb')
+export default PersonajePrincipal;
