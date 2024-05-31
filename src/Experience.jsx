@@ -34,13 +34,15 @@ const SetupPhysicsWorld = () => {
           <Suelo />
             <Ecctrl 
               movement={movement}
-              camInitDis={-8} // distancia inicial de la cámara
+              camInitDis={-6} // distancia inicial de la cámara
               camMaxDis={-11} // distancia máxima de la cámara
-              camMinDis={-5} // distancia mínima de la cámara
-              camFollowMult={1} // velocidad de seguimiento de la cámara
+              camMinDis={-3} // distancia mínima de la cámara
+              camFollowMult={10} // velocidad de seguimiento de la cámara
               camCollision={true}  //  colisión de la cámara
               camCollisionOffset={0.7} //offset de colisión de la cámara
-              debug={false} >
+              debug={false}
+              mode="CameraBasedMovement"
+            >
               <Personaje_principal movement={movement} ref={personajeRef}/> 
             </Ecctrl>
       </Physics>

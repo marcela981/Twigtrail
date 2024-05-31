@@ -1,22 +1,22 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import React, { useRef } from 'react';
 
-const Camera = ({ characterRef, offsetY = 5, offsetZ =3 }) => {
-    const { camera } = useThree();
-    const currentPos = useRef(camera.position.clone());
+const Camera = ({ characterRef }) => {
+    const { camera, gl  } = useThree();
+
 
   useFrame(() => {
-    if (characterRef && characterRef.current) {
-        const desiredPosition = characterRef.current.position.clone();
-        desiredPosition.y += offsetY;
-        desiredPosition.z += offsetZ;
+    if (characterRef.current) {
+      const desiredPosition = characterRef.current.position.clone();
+      desiredPosition.y += 7;  // Ajusta la altura de la cámara
+      desiredPosition.z += 0;  // Ajusta la distancia detrás del personaje
+
+      camera.position.lerp(desiredPosition, 0.1);
+      camera.lookAt(characterRef.current.position);
+  }
+});
 
 
-        camera.position.lerp(desiredPosition, 0.1);
-        camera.lookAt(characterRef.current.position);
-
-    }
-  });
 
   return null;
 };
