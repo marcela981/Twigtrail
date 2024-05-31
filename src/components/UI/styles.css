@@ -7,7 +7,7 @@ body, html {
   }
   
   .home-container {
-    background: url('/assets/images/blue-sky-half-moon-crescent-moon-clouds-star-trails-5k-3840x2160-8404.png') no-repeat center center fixed;
+    background: black;
     background-size: cover;
     height: 100vh;
     display: flex;
@@ -52,12 +52,13 @@ body, html {
     background-color: #e63946;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 25px;
     font-size: 1.5em;
     cursor: pointer;
     border-radius: 5px;
     text-decoration: none;
     align-items: center;
+    margin-left:200px;
   }
   
   footer {
