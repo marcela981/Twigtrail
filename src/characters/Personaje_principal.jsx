@@ -51,7 +51,7 @@ useFrame(() => {
   });
 
   return (
-    <group ref={group}  dispose={null} position={[0, -0.62, 0]} rotation={[0, rotationY, 0]}>
+    <group ref={group}  dispose={null} position={[0, -0.62, 2]} rotation={[0, rotationY, 0]}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group name="root">
