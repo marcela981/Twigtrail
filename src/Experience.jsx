@@ -5,22 +5,8 @@ import Personaje_principal from './characters/Personaje_principal';
 import Habitacion from './room/Habitacion';
 import Suelo from './room/Suelo';
 import useKeyboardControls from './components/controls/useKeyboardControls';
-import Camera from './components/camera/Camera';
 
 
-
-const SetupPhysicsWorld = () => {
-  const { world } = useRapier();
-
-  useEffect(() => {
-    if (world) {
-      world.timestep = 1 / 60;
-      world.gravity = { x: 0, y: -9.81, z: 0 };
-    }
-  }, [world]);
-
-  return null;
-};
 
   const Experience = ({ personajeRef }) => {
 
@@ -28,7 +14,6 @@ const SetupPhysicsWorld = () => {
     const characterRef = useRef();
   
   return (
-    <>
       <Physics>
           <Habitacion />
           <Suelo />
@@ -46,7 +31,6 @@ const SetupPhysicsWorld = () => {
               <Personaje_principal movement={movement} ref={personajeRef}/> 
             </Ecctrl>
       </Physics>
-    </>
   );
 };
 
