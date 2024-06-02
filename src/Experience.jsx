@@ -5,14 +5,19 @@ import Personaje_principal from './characters/Personaje_principal';
 import Habitacion from './room/Habitacion';
 import Suelo from './room/Suelo';
 import useKeyboardControls from './components/controls/useKeyboardControls';
+import useGamepadControls from './components/controls/useGamepadControls';
 
 
 
   const Experience = ({ personajeRef }) => {
-
-    const movement = useKeyboardControls();
+    const keyboardMovement = useKeyboardControls();
+    const gamepadMovement = useGamepadControls();
     const characterRef = useRef();
   
+    const movement = gamepadMovement.forward || gamepadMovement.backward || gamepadMovement.left || gamepadMovement.right
+    ? gamepadMovement
+    : keyboardMovement;
+
   return (
       <Physics>
           <Habitacion />
