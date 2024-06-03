@@ -2,14 +2,20 @@ import React, { useRef, useEffect, useState, forwardRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber';
 import useKeyboardControls from '../components/controls/useKeyboardControls';
+import useGamepadControls from '../components/controls/useGamepadControls';
 
 const PersonajePrincipal = forwardRef((props, ref) => {
     const group = ref || useRef();
     const { nodes, materials, animations } = useGLTF('assets/models/Character/majd_the_boy.glb')
     const { actions } = useAnimations(animations, group);
     const [rotationY, setRotationY] = useState(0); // Estado para la rotación del personaje
-    const movement = useKeyboardControls();
+    
+    const keyboardMovement = useKeyboardControls();
+    const gamepadMovement = useGamepadControls();
 
+    const movement = gamepadMovement.forward || gamepadMovement.backward || gamepadMovement.left || gamepadMovement.right
+    ? gamepadMovement 
+    : keyboardMovement;
 
   useEffect(() => {
 
@@ -24,6 +30,9 @@ const PersonajePrincipal = forwardRef((props, ref) => {
 
 
 useFrame(() => {
+  
+
+
     if (movement.forward) {
       actions.Walk.play();
       group.current.translateZ(-0.05); // Mueve hacia adelante

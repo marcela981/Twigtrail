@@ -9,15 +9,22 @@ const useGamepadControls = () => {
     right: false,
     jump: false,
     sprint: false,
+    axisX:0,
+    axisY:0
   });
 
+  // Handle gamepad connection
   useEffect(() => {
     const connectHandler = (event) => {
+      console.log("Gamepad connected:", event.gamepad);
       setGamepadIndex(event.gamepad.index);
     };
 
-    const disconnectHandler = () => {
-      setGamepadIndex(null);
+    const disconnectHandler = (event) => {
+      console.log("Gamepad disconnected:", event.gamepad);
+      if (gamepadIndex === event.gamepad.index) {
+        setGamepadIndex(null);
+      }
     };
 
     window.addEventListener('gamepadconnected', connectHandler);
@@ -27,26 +34,27 @@ const useGamepadControls = () => {
       window.removeEventListener('gamepadconnected', connectHandler);
       window.removeEventListener('gamepaddisconnected', disconnectHandler);
     };
-  }, []);
+  }, [gamepadIndex]);
 
+  // Poll gamepad status
   useEffect(() => {
-    if (gamepadIndex === null) return;
-
     const updateControls = () => {
       const gamepad = navigator.getGamepads()[gamepadIndex];
       if (!gamepad) return;
 
       const newControls = {
-        forward: gamepad.buttons[12].pressed,
-        backward: gamepad.buttons[13].pressed,
+        forward: gamepad.buttons[13].pressed,
+        backward: gamepad.buttons[12].pressed,
         left: gamepad.buttons[14].pressed,
         right: gamepad.buttons[15].pressed,
         jump: gamepad.buttons[0].pressed,
         sprint: gamepad.buttons[10].pressed,
+        axisX: gamepad.axes[0],
+        axisY: gamepad.axes[1]
       };
 
+      console.log("Gamepad controls:", newControls);
       setControls(newControls);
-
       requestAnimationFrame(updateControls);
     };
 

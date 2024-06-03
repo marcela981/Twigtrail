@@ -26,8 +26,8 @@ const useKeyboardControls = () => {
   }, []);
 
   const movement = {
-    forward: keysPressed.has('arrowup') || keysPressed.has('s'),
-    backward: keysPressed.has('arrowdown') || keysPressed.has('w'),
+    forward: keysPressed.has('arrowdown') || keysPressed.has('s'),
+    backward: keysPressed.has('arrowup') || keysPressed.has('w'),
     left: keysPressed.has('arrowleft') || keysPressed.has('a'),
     right: keysPressed.has('arrowright') || keysPressed.has('d'),
     jump: keysPressed.has(' '),
