@@ -1,66 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Physics } from '@react-three/rapier';
+import React, { useEffect, useState, useRef } from 'react';
+import { Physics, useRapier } from '@react-three/rapier';
 import Ecctrl from 'ecctrl';
+import Personaje_principal from './characters/Personaje_principal';
+import Habitacion from './room/Habitacion';
+import Suelo from './room/Suelo';
+import useKeyboardControls from './components/controls/useKeyboardControls';
+import useGamepadControls from './components/controls/useGamepadControls';
+import useUnifiedControls from './components/controls/useUnifiedControls';
 
-const useKeyboardControls = () => {
-  const [movement, setMovement] = useState({
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
-    jump: false,
-  });
 
-  // Define el mapeo de teclas y la función de manejo de eventos aquí
-  const keyMap = {
-    ArrowUp: 'forward',
-    KeyW: 'forward',
-    ArrowDown: 'backward',
-    KeyS: 'backward',
-    ArrowLeft: 'left',
-    KeyA: 'left',
-    ArrowRight: 'right',
-    KeyD: 'right',
-    Space: 'jump'
-  };
+  const Experience = ({ personajeRef, controls }) => {
+    const unifiedControls = useUnifiedControls();
+    const keyboardMovement = useKeyboardControls();
+    const gamepadMovement = useGamepadControls();
+    const characterRef = useRef();
 
-  const handleKeyEvent = (event, active) => {
-    const action = keyMap[event.code];
-    if (action) {
-      setMovement(m => ({ ...m, [action]: active }));
-    }
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (event) => handleKeyEvent(event, true);
-    const handleKeyUp = (event) => handleKeyEvent(event, false);
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  return movement;
-};
-
-const Experience = () => {
-  const movement = useKeyboardControls();
+    const activeControls = useGamepadControls.forward || useGamepadControls.backward || useGamepadControls.left || useGamepadControls.right || useGamepadControls.jump || useGamepadControls.sprint
+    ? useGamepadControls
+    : useKeyboardControls;
 
   return (
-    <Physics>
-      <Ecctrl movement={movement}>
-        {/* Pon aquí cuando este el modelo */}
-        <mesh>
-          <boxGeometry args={[2, 2, 1]} />
-          <meshStandardMaterial color="blue" />
-        </mesh>
-      </Ecctrl>
-    </Physics>
+      <Physics>
+          <Habitacion />
+          <Suelo />
+            <Ecctrl 
+              movement={activeControls}
+              camInitDis={-6} // distancia inicial de la cámara
+              camMaxDis={-11} // distancia máxima de la cámara
+              camMinDis={-3} // distancia mínima de la cámara
+              camFollowMult={10} // velocidad de seguimiento de la cámara
+              camCollision={true}  //  colisión de la cámara
+              camCollisionOffset={0.7} //offset de colisión de la cámara
+              debug={false}
+              mode="CameraBasedMovement"
+            >
+              <Personaje_principal movement={activeControls} ref={personajeRef}/> 
+            </Ecctrl>
+      </Physics>
   );
 };
+
 
 export default Experience;
