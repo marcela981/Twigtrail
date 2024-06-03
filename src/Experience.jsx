@@ -5,46 +5,38 @@ import Personaje_principal from './characters/Personaje_principal';
 import Habitacion from './room/Habitacion';
 import Suelo from './room/Suelo';
 import useKeyboardControls from './components/controls/useKeyboardControls';
-import Camera from './components/camera/Camera';
+import useGamepadControls from './components/controls/useGamepadControls';
+import useUnifiedControls from './components/controls/useUnifiedControls';
 
 
-
-const SetupPhysicsWorld = () => {
-  const { world } = useRapier();
-
-  useEffect(() => {
-    if (world) {
-      world.timestep = 1 / 60;
-      world.gravity = { x: 0, y: -9.81, z: 0 };
-    }
-  }, [world]);
-
-  return null;
-};
-
-  const Experience = ({ personajeRef }) => {
-
-    const movement = useKeyboardControls();
+  const Experience = ({ personajeRef, controls }) => {
+    const unifiedControls = useUnifiedControls();
+    const keyboardMovement = useKeyboardControls();
+    const gamepadMovement = useGamepadControls();
     const characterRef = useRef();
-  
+
+    const activeControls = useGamepadControls.forward || useGamepadControls.backward || useGamepadControls.left || useGamepadControls.right || useGamepadControls.jump || useGamepadControls.sprint
+    ? useGamepadControls
+    : useKeyboardControls;
+
   return (
-    <>
       <Physics>
           <Habitacion />
           <Suelo />
             <Ecctrl 
-              movement={movement}
-              camInitDis={0}
-              camMaxDis={-1}
-              camMinDis={-0.2}
-              camFollowMult={2}
-              camCollision={true}
-              camCollisionOffset={0.7}
-              debug={false} >
-              <Personaje_principal movement={movement} ref={personajeRef}/> 
+              movement={activeControls}
+              camInitDis={-6} // distancia inicial de la cámara
+              camMaxDis={-11} // distancia máxima de la cámara
+              camMinDis={-3} // distancia mínima de la cámara
+              camFollowMult={10} // velocidad de seguimiento de la cámara
+              camCollision={true}  //  colisión de la cámara
+              camCollisionOffset={0.7} //offset de colisión de la cámara
+              debug={false}
+              mode="CameraBasedMovement"
+            >
+              <Personaje_principal movement={activeControls} ref={personajeRef}/> 
             </Ecctrl>
       </Physics>
-    </>
   );
 };
 
