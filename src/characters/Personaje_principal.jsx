@@ -3,6 +3,7 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber';
 import useKeyboardControls from '../components/controls/useKeyboardControls';
 import useGamepadControls from '../components/controls/useGamepadControls';
+import useUnifiedControls from '../components/controls/useUnifiedControls';
 
 const PersonajePrincipal = forwardRef((props, ref) => {
     const group = ref || useRef();
@@ -12,6 +13,7 @@ const PersonajePrincipal = forwardRef((props, ref) => {
     
     const keyboardMovement = useKeyboardControls();
     const gamepadMovement = useGamepadControls();
+    const controls = useUnifiedControls();
 
     const movement = gamepadMovement.forward || gamepadMovement.backward || gamepadMovement.left || gamepadMovement.right
     ? gamepadMovement 

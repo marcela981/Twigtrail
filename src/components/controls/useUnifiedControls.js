@@ -10,12 +10,28 @@ const useUnifiedControls = () => {
 
   const [unifiedControls, setUnifiedControls] = useState({});
 
+  const updateGamepad = () => {
+    const gamepad = navigator.getGamepads()[0]; // Asume un solo gamepad por simplicidad
+    if (gamepad) {
+      const newControls = {
+        forward: gamepad.buttons[12].pressed, // Asignar según la configuración de tu gamepad
+        backward: gamepad.buttons[13].pressed,
+        left: gamepad.buttons[14].pressed,
+        right: gamepad.buttons[15].pressed,
+        jump: gamepad.buttons[0].pressed,
+        axisX: gamepad.axes[0],
+        axisY: gamepad.axes[1],
+        active: gamepad.buttons.some(button => button.pressed)
+      };
+      setUnifiedControls(newControls);
+    }
+    requestAnimationFrame(updateGamepad);
+  };
+
   useEffect(() => {
-    // Aquí decides la prioridad de los controles
-    // Por ejemplo, si el gamepad está activo, tiene prioridad sobre el teclado
-    if (gamepadControls.forward || gamepadControls.backward || gamepadControls.left || gamepadControls.right) {
+    if (gamepadControls.active) {
       setUnifiedControls(gamepadControls);
-    } else if (touchControls.active) { // Suponiendo que touchControls tiene un estado 'active'
+    } else if (touchControls.active) {
       setUnifiedControls(touchControls);
     } else {
       setUnifiedControls(keyboardControls);
